@@ -1,1 +1,61 @@
-// TODO
+.content {
+  a {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 108px;
+    margin-bottom: 40px;
+  }
+
+  &:hover .title h1 {
+    color: var(--Highlight)
+  }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 64px;
+
+  h1 {
+    font-weight: 700;
+    color: var(--Heading);
+    font-size: 28px;
+    transition: color 0.2s;
+  }
+
+  span {
+    font-weight: 400;
+    font-size: var(--18-px);
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 263px;
+}
+
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--Info);
+  img {
+    padding-right: 8px;
+  }
+  span {
+    font-size: var(--14-px);
+  }
+}
+
+.loadMore {
+  margin-top: 24px;
+  color: var(--Highlight);
+  font-weight: 600;
+  font-size: var(--18-px);
+}

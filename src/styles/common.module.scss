@@ -1,1 +1,10 @@
-// TODO
+.postContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
