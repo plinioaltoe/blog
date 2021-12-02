@@ -1,11 +1,17 @@
 import { GetStaticProps } from 'next';
 
+import { FiUser, FiCalendar } from "react-icons/fi";
+
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
 import Prismic from '@prismicio/client';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 
 interface Post {
   uid?: string;
@@ -28,38 +34,75 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
 
+  const [nextPage, setNextPage] = useState(postsPagination.next_page)
   const [posts, setPosts] = useState<Post[]>(postsPagination.results)
 
-  // setPosts(postsPagination.results)
 
-  console.log(postsPagination)
+  const handleClick = () => {
+    fetch(nextPage)
+      .then(response => response.json())
+      .then(data => {
+        const { results, next_page } = handleDataPosts(data)
+        setPosts([...posts, ...results])
+        setNextPage(next_page)
+      })
+  }
 
   return (
     <main className={commonStyles.postContainer}>
-      <div className={styles.content}>
-        {posts.map(({ data, uid }) =>
-          <a href="#" key={uid}>
-            <div className={styles.title}>
-              <h1>{data.title}</h1>
-              <span>{data.subtitle}</span>
-            </div>
-            <div className={styles.details}>
-              <div className={styles.info}>
-                <img src="/images/calendar.svg" alt="calendar" />
-                <span>15 Mar 2021</span>
+      {posts.map(({ data, uid, first_publication_date }) =>
+        <div className={styles.content} key={uid}>
+          <Link href={`/post/${uid}`}>
+            <a>
+              <div className={styles.title}>
+                <h1>{data.title}</h1>
+                <span>{data.subtitle}</span>
               </div>
-              <div className={styles.info}>
-                <img src="/images/user.svg" alt="user" />
-                <span>{data.author}</span>
+              <div className={styles.details}>
+                <div className={styles.info}>
+                  <FiCalendar />
+                  <span>{first_publication_date}</span>
+                </div>
+                <div className={styles.info}>
+                  <FiUser />
+                  <span>{data.author}</span>
+                </div>
               </div>
-            </div>
-          </a>
-        )}
-      </div>
+            </a>
+          </Link>
+        </div>
+      )}
 
-      <span className={styles.loadMore}>Carregar mais posts</span>
+      {nextPage &&
+        <span
+          className={styles.loadMore}
+          onClick={handleClick}
+        >
+          Carregar mais posts
+        </span>
+      }
     </main >
   )
+}
+
+const handleDataPosts = (postsResponse: PostPagination): PostPagination => {
+  const results = postsResponse?.results?.map(({ uid, first_publication_date, data }) => {
+    return {
+      uid,
+      first_publication_date: format(
+        new Date(first_publication_date),
+        "dd MMM yyyy",
+        {
+          locale: ptBR,
+        }
+      ),
+      data,
+    }
+  })
+  return {
+    results,
+    next_page: postsResponse.next_page
+  }
 }
 
 export const getStaticProps = async () => {
@@ -70,24 +113,13 @@ export const getStaticProps = async () => {
     ],
     {
       fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
-      pageSize: 3
+      pageSize: 1
     }
   );
 
-  const results = postsResponse?.results?.map(({ uid, first_publication_date, data }) => ({
-    uid,
-    first_publication_date,
-    data,
-  }))
-
-  const postsPagination = {
-    results,
-    next_page: postsResponse.next_page
-  }
-  
   return {
     props: {
-      postsPagination
+      postsPagination: handleDataPosts(postsResponse)
     }
   }
 };

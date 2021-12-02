@@ -1,28 +1,27 @@
 .content {
-  a {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 108px;
-    margin-bottom: 40px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 48px;
 
   &:hover .title h1 {
     color: var(--Highlight)
   }
+
 }
 
 .title {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 64px;
+  margin-bottom: 24px;
 
   h1 {
     font-weight: 700;
     color: var(--Heading);
     font-size: 28px;
     transition: color 0.2s;
+    margin-bottom: 8px;
   }
 
   span {
@@ -45,17 +44,17 @@
   justify-content: space-between;
   align-items: center;
   color: var(--Info);
-  img {
-    padding-right: 8px;
-  }
+
   span {
+    padding-left: 8px;
     font-size: var(--14-px);
   }
 }
 
 .loadMore {
-  margin-top: 24px;
+  margin: 24px 0 120px 0;
   color: var(--Highlight);
   font-weight: 600;
   font-size: var(--18-px);
+  cursor: pointer;
 }
