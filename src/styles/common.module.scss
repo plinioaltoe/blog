@@ -8,3 +8,28 @@
   margin: 0 auto;
   padding: 0 2rem;
 }
+
+
+.details {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  .info:not(:last-child) {
+      margin-right: 24px;
+  }
+}
+
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--Info);
+
+  span, time {
+    padding-left: 8px;
+    font-size: var(--14-px);
+  }
+}

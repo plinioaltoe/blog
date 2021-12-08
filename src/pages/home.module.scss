@@ -30,27 +30,6 @@
   }
 }
 
-.details {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 263px;
-}
-
-
-.info {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--Info);
-
-  span {
-    padding-left: 8px;
-    font-size: var(--14-px);
-  }
-}
-
 .loadMore {
   margin: 24px 0 120px 0;
   color: var(--Highlight);

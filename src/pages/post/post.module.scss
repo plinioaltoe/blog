@@ -1,1 +1,27 @@
-// TODO
+.container {
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  img {
+    max-height: 400px;
+    margin-bottom: 60px;
+  }
+}
+
+.heading {
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+/* identical to box height */
+
+letter-spacing: -0.5px;
+
+/* Heading */
+
+color: var(--Heading);
+margin-bottom: 24px;
+
+}
