@@ -12,6 +12,7 @@ import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 
 interface Post {
   uid?: string;
@@ -49,39 +50,50 @@ export default function Home({ postsPagination }: HomeProps) {
   }
 
   return (
-    <main className={commonStyles.postContainer}>
-      {posts.map(({ data, uid, first_publication_date }) =>
-        <div className={styles.content} key={uid}>
-          <Link href={`/post/${uid}`}>
-            <a>
-              <div className={styles.title}>
-                <h1>{data.title}</h1>
-                <span>{data.subtitle}</span>
-              </div>
-              <div className={commonStyles.details}>
-                <div className={commonStyles.info}>
-                  <FiCalendar />
-                  <time>{first_publication_date}</time>
+    <>
+      <Head>
+        <title> Posts</title>
+      </Head>
+      <main className={commonStyles.postContainer}>
+        {posts.map(({ data, uid, first_publication_date }) =>
+          <div className={styles.content} key={uid}>
+            <Link href={`/post/${uid}`}>
+              <a>
+                <div className={styles.title}>
+                  <h1>{data.title}</h1>
+                  <span>{data.subtitle}</span>
                 </div>
-                <div className={commonStyles.info}>
-                  <FiUser />
-                  <span>{data.author}</span>
+                <div className={commonStyles.details}>
+                  <div className={commonStyles.info}>
+                    <FiCalendar />
+                    <time>{format(
+                      new Date(first_publication_date),
+                      "dd MMM yyyy",
+                      {
+                        locale: ptBR,
+                      }
+                    )}</time>
+                  </div>
+                  <div className={commonStyles.info}>
+                    <FiUser />
+                    <span>{data.author}</span>
+                  </div>
                 </div>
-              </div>
-            </a>
-          </Link>
-        </div>
-      )}
+              </a>
+            </Link>
+          </div>
+        )}
 
-      {nextPage &&
-        <span
-          className={styles.loadMore}
-          onClick={handleClick}
-        >
-          Carregar mais posts
-        </span>
-      }
-    </main >
+        {nextPage &&
+          <span
+            className={styles.loadMore}
+            onClick={handleClick}
+          >
+            Carregar mais posts
+          </span>
+        }
+      </main >
+    </>
   )
 }
 
@@ -89,13 +101,7 @@ const handleDataPosts = (postsResponse: PostPagination): PostPagination => {
   const results = postsResponse?.results?.map(({ uid, first_publication_date, data }) => {
     return {
       uid,
-      first_publication_date: format(
-        new Date(first_publication_date),
-        "dd MMM yyyy",
-        {
-          locale: ptBR,
-        }
-      ),
+      first_publication_date,
       data,
     }
   })
